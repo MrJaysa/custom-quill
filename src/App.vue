@@ -44,7 +44,7 @@
       <button @click="previewer" id="preview">preview</button>
   </div>
 
-  <div v-html="content" class="mx-1"></div>
+  <p v-html="content" class="mx-1"></p>
 </template>
 
 <script>
@@ -59,8 +59,15 @@ export default {
       fname: null,
       lname: null,
       prof: null,
-      content: null
+      content: null,
+      testing: 'this is a test {{ fname }}'
     };
+  },
+
+  watch: {
+    fname: 'updateFnameVar',
+    lname: 'updateLnameVar',
+    prof: 'updateProfVar'
   },
 
   mounted() {
@@ -71,7 +78,7 @@ export default {
         static create(value) {
             let node = super.create(value);
             
-            node.setAttribute('class', 'badge badge-' + value.colour, + ' var-' + value.marker);
+            node.setAttribute('class', 'badge badge-' + value.colour + ' var-' + value.cl);
             //Set up the badge, and badge colour
             
             node.setAttribute('data-marker', value.marker);
@@ -124,13 +131,13 @@ export default {
         {
           colour: event.dataTransfer.getData('colour'),
           marker: event.dataTransfer.getData('marker'),
-          title: event.dataTransfer.getData('title')
+          title: event.dataTransfer.getData('title'),
+          cl: event.dataTransfer.getData('cl')
         },
       );
     },
     varDrag(event) {
       event.target.setAttribute('draggable', true)
-      console.log(event.target.dataset.marker)
       if (event.target.dataset.marker == 'fname') {
         event.dataTransfer.setData('marker', this.fname)
       } else if (event.target.dataset.marker == 'lname') {
@@ -140,6 +147,7 @@ export default {
       }
       event.dataTransfer.setData('colour', event.target.dataset.colour)
       event.dataTransfer.setData('title',  event.target.dataset.title)
+      event.dataTransfer.setData('cl',  event.target.dataset.marker)
     },
     previewer () {
       var delta = this.quill.getContents();
@@ -152,7 +160,34 @@ export default {
       });
     
       this.content = converter.convert();
+    },
+    updateFnameVar() {
+      if (document.querySelectorAll('.var-fname')) {
+        document.querySelectorAll('.var-fname').forEach(el=>{
+          el.dataset.marker = this.fname
+        })
+      }
+    },
+    updateLnameVar() {
+      if (document.querySelectorAll('.var-lname')) {
+        document.querySelectorAll('.var-lname').forEach(el=>{
+          el.dataset.marker = this.lname
+        })
+      }
+    },
+    updateProfVar() {
+      if (document.querySelectorAll('.var-prof')) {
+        document.querySelectorAll('.var-prof').forEach(el=>{
+          el.dataset.marker = this.prof
+        })
+      }
     }
   },
 }
 </script>
+
+<style>
+  .ql-editor {
+    height: 30vh
+  }
+</style>
