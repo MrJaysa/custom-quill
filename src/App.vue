@@ -4,7 +4,7 @@
       <div class="mb-5 flex">
         <div class="mx-1">
           <label for="fname">Select First name</label>
-          <select id="fname" v-model="fname">
+          <select id="fname" v-model="fname" @change="setMaker">
             <option value="Joel">Joel</option>
             <option value="Sammy">Sammy</option>
             <option value="James">James</option>
@@ -12,7 +12,7 @@
         </div>
         <div class="mx-1">
           <label for="lname">Select Last name</label>
-          <select id="lname" v-model="lname">
+          <select id="lname" v-model="lname" @change="setMaker">
             <option value="Alex">Alex</option>
             <option value="Michael">Michael</option>
             <option value="Ronald">Ronald</option>
@@ -21,7 +21,7 @@
 
         <div class="mx-1">
           <label for="prof">Select Profession</label>
-          <select id="prof" v-model="prof">
+          <select id="prof" v-model="prof" @change="setMaker">
             <option value="Programmer">Programmer</option>
             <option value="Carpenter">Carpenter</option>
             <option value="Driver">Driver</option>
@@ -34,12 +34,12 @@
     </div>
 
     <div>
-      <span @dragstart="varDrag" draggable="true" class="vars" v-bind:attr="fname" data-marker="fname" data-title="FIRST NAME" data-colour="warning">firstname</span>
+      <span @dragstart="varDrag" draggable="true" class="vars" data-marker="fname" data-title="FIRST NAME" data-colour="warning">firstname</span>
       <span @dragstart="varDrag" draggable="true" class="vars" data-marker="lname" data-title="LAST NAME" data-colour="primary">last name</span>
       <span @dragstart="varDrag" draggable="true" class="vars" data-marker="prof" data-title="Profession" data-colour="secondary">profession</span>
     </div>
   </div>
-
+  
   <div class="mx-1 mt-1">
       <button @click="previewer" id="preview">preview</button>
   </div>
@@ -70,7 +70,7 @@ export default {
     class TemplateMarker extends Embed {
         static create(value) {
             let node = super.create(value);
-            node.se
+            
             node.setAttribute('class', 'badge badge-' + value.colour, + ' var-' + value.marker);
             //Set up the badge, and badge colour
             
